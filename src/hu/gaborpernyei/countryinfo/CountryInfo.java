@@ -4,19 +4,70 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CountryInfo {
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
+
+public class CountryInfo extends Application {
+    private AllCountries countries = new AllCountries();
+    private ComboBox cbCountryNames;
 
     public static void main(String[] args) {
-        AllCountries countries = new AllCountries();
-
-        countries.loadCountries();
+        Application.launch(args);
     }
 
+    @Override
+    public void init() throws Exception {
+        countries.loadCountries();
+
+        cbCountryNames = new ComboBox();
+        cbCountryNames.getItems().addAll(countries.getCountryNames());
+        cbCountryNames.getSelectionModel().select(0);
+
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Region spacer = new Region();
+        HBox topPanel = new HBox(10, cbCountryNames);
+        topPanel.setAlignment(Pos.CENTER);
+        topPanel.setPadding(new Insets(10));
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        BorderPane bp = new BorderPane();
+        bp.setTop(topPanel);
+
+        Scene scene = new Scene(bp, 800, 600);
+        stage.setTitle("Countries");
+        stage.setScene(scene);
+        stage.show();
+    }
 }
 
 //Minden ország osztálya
 class AllCountries{
     List<Country> allCountries = new ArrayList<Country>();
+
+    //Országnevek visszaadása tömbként
+    public String[] getCountryNames(){
+        String[] names;
+        Integer i = 0;
+
+        names = new String[allCountries.size()];
+        for (Country c:allCountries) {
+            names[i] = c.getCountry();
+            i ++;
+        }
+
+        return names;
+    }
 
     //Országok beolvasása
     public boolean loadCountries(){
