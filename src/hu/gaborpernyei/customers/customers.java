@@ -29,6 +29,23 @@ public class customers {
 
         //Ügyfelek kiírása
         public boolean saveCustomers(String fileName){
+            BufferedWriter bw = null;
+            String oneLine;
+
+            File outputFile = new File(fileName);
+            try {
+                bw = new BufferedWriter( new FileWriter(outputFile));
+                bw.write(headerOfCSV); bw.newLine();
+                for (OneCustomer oc: customers ) {
+                    oneLine = oc.getName()+","+oc.getMotherName()+","+oc.getDayOfBirth()+","+oc.getPlaceOfBirth()+","+
+                              oc.getAccDate()+","+oc.getAccNo()+","+oc.getBalance()+","+oc.getDeposit();
+                    bw.write( oneLine );
+                }
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
 
             return true;
         }
@@ -62,6 +79,7 @@ public class customers {
                                                  rawValues[4], rawValues[5], balance, deposit );
                     customers.add(aCustomer);
                 }
+                br.close();
             } catch (IOException e ){
                 e.printStackTrace();
                 return false;
