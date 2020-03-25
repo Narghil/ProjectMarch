@@ -11,12 +11,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class CountryInfo extends Application {
@@ -24,6 +22,8 @@ public class CountryInfo extends Application {
     private ComboBox cbCountryNames;
     private Image capitalImage;
     private ImageView imageView = new ImageView(capitalImage);
+    private Label lbCapitalName = new Label("Name of the capital city");
+    private Label lbPopulation = new Label("Population");
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -33,13 +33,16 @@ public class CountryInfo extends Application {
         @Override
         public void handle(ActionEvent actionEvent) {
             String name;
+            String[] retVals;
 
             name = cbCountryNames.getSelectionModel().getSelectedItem().toString();
             System.out.println( name );
-            name = countries.getCountryJPGName( name );
+            retVals = countries.getCountryDatas( name );
             try {
-                capitalImage = new Image( new FileInputStream( name ) );
+                capitalImage = new Image( new FileInputStream( retVals[0] ) );
                 imageView.setImage(capitalImage);
+                lbCapitalName.setText(retVals[1]);
+                lbPopulation.setText(retVals[2]);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -80,9 +83,15 @@ public class CountryInfo extends Application {
         centerPanel.setPadding(new Insets(10));
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        HBox bottomPanel = new HBox( 10, lbCapitalName, lbPopulation);
+        bottomPanel.setAlignment(Pos.CENTER);
+        bottomPanel.setPadding(new Insets(10));
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
         BorderPane bp = new BorderPane();
         bp.setTop(topPanel);
         bp.setCenter(centerPanel);
+        bp.setBottom(bottomPanel);
 
         Scene scene = new Scene(bp, 800, 600);
         stage.setTitle("Countries");
@@ -108,11 +117,15 @@ class AllCountries{
         return names;
     }
 
-    //Adott nevű országhoz tartozó picture elérési útvonala
-    public String getCountryJPGName( String name){
-        String retVal = "";
+    //Adott nevű országhoz tartozó picture elérési útvonala, főváros neve, népesség
+    public String[] getCountryDatas( String name){
+        String[] retVal = new String[3];
         for (Country c:allCountries) {
-            if( c.getCountry() == name ){ retVal = c.getPathToJPG(); }
+            if( c.getCountry() == name ){
+                retVal[0] = c.getPathToJPG();
+                retVal[1] = c.getCapital();
+                retVal[2] = c.getPopulation();
+            }
         }
         return retVal;
     }
