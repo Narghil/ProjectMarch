@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -18,9 +22,28 @@ import javafx.stage.Stage;
 public class CountryInfo extends Application {
     private AllCountries countries = new AllCountries();
     private ComboBox cbCountryNames;
+    private Image capitalImage;
+    private ImageView imageView = new ImageView(capitalImage);
 
     public static void main(String[] args) {
         Application.launch(args);
+    }
+
+    private class ComboBoxHandler implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent actionEvent) {
+            String name;
+
+            name = cbCountryNames.getSelectionModel().getSelectedItem().toString();
+            System.out.println( name );
+            name = countries.getCountryJPGName( name );
+            try {
+                capitalImage = new Image( new FileInputStream( name ) );
+                imageView.setImage(capitalImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -30,7 +53,18 @@ public class CountryInfo extends Application {
         cbCountryNames = new ComboBox();
         cbCountryNames.getItems().addAll(countries.getCountryNames());
         cbCountryNames.getSelectionModel().select(0);
+        ComboBoxHandler cbxHandler = new ComboBoxHandler();
+        cbCountryNames.setOnAction(cbxHandler);
+        cbxHandler.handle(null);
 
+        //Setting the position of the image
+        //imageView.setX(50);
+        //imageView.setY(25);
+        //setting the fit height and width of the image view
+        imageView.setFitHeight(455);
+        imageView.setFitWidth(500);
+        //Setting the preserve ratio of the image view
+        imageView.setPreserveRatio(true);
     }
 
     @Override
@@ -41,8 +75,14 @@ public class CountryInfo extends Application {
         topPanel.setPadding(new Insets(10));
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        HBox centerPanel = new HBox(10, imageView);
+        centerPanel.setAlignment(Pos.CENTER);
+        centerPanel.setPadding(new Insets(10));
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
         BorderPane bp = new BorderPane();
         bp.setTop(topPanel);
+        bp.setCenter(centerPanel);
 
         Scene scene = new Scene(bp, 800, 600);
         stage.setTitle("Countries");
@@ -65,8 +105,16 @@ class AllCountries{
             names[i] = c.getCountry();
             i ++;
         }
-
         return names;
+    }
+
+    //Adott nevű országhoz tartozó picture elérési útvonala
+    public String getCountryJPGName( String name){
+        String retVal = "";
+        for (Country c:allCountries) {
+            if( c.getCountry() == name ){ retVal = c.getPathToJPG(); }
+        }
+        return retVal;
     }
 
     //Országok beolvasása
