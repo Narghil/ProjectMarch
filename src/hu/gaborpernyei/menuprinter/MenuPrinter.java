@@ -6,7 +6,7 @@ public class MenuPrinter {
         MenuItem rootMenu = new MenuItem( "File");
         MenuItem newMenu = new MenuItem("New");
 
-        newMenu.setSubItems( new MenuItem("Project"), new MenuItem("Project from existing sources"),
+        newMenu.setSubItems( new MenuItem("Project"), new MenuItem("Project from Existing Sources"),
                              new MenuItem( "Project from Version Control")
                 );
         rootMenu.setSubItems( newMenu, new MenuItem("Open") , new MenuItem( "Open URL"),
