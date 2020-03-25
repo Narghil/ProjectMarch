@@ -2,6 +2,7 @@ package hu.gaborpernyei.customers;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class customers {
@@ -12,6 +13,11 @@ public class customers {
         allCustomers = new AllCustomers();
         allCustomers.loadCustomers();
         allCustomers.sortByAccDate();
+        allCustomers.saveCustomers("szamlanyitas.csv");
+        allCustomers.sortByNames();
+        allCustomers.saveCustomers("nevek.csv");
+        allCustomers.sortBySum();
+        allCustomers.saveCustomers("penzosszegek.csv");
     }
 
 }
@@ -19,6 +25,13 @@ public class customers {
     //az összes ügyfél osztálya
     class AllCustomers{
         private List<OneCustomer> customers = new ArrayList<OneCustomer>();
+        private String headerOfCSV ;
+
+        //Ügyfelek kiírása
+        public boolean saveCustomers(String fileName){
+
+            return true;
+        }
 
         //Ügyfelek beolvasása
         public boolean loadCustomers(){
@@ -38,8 +51,8 @@ public class customers {
                 return false;
             }
             try {
-                //A fejléc sor beolvasása és eldobása
-                br.readLine();
+                //A fejléc sor beolvasása és eltárolása
+                headerOfCSV = br.readLine();
                 //egy sor beolvasása, amíg vannak sorok.
                 while ((oneLine = br.readLine()) != null) {
                     rawValues = oneLine.split(",");
@@ -62,15 +75,23 @@ public class customers {
         public void sortByAccDate(){
             Collections.sort( customers , (c1, c2) -> c1.getAccDate().compareTo(c2.getAccDate()));
         }
+        //Ügyfelek rendezése név és anyja neve szerint
+        public void sortByNames(){
+            Collections.sort( customers , (c1, c2) -> c1.getNames().compareTo(c2.getNames()));
+        }
+        //Ügyfelek rendezése balance+deposit szerint
+        public void sortBySum(){
+            Collections.sort( customers , (c1, c2) -> c1.getSum().compareTo(c2.getSum()));
+        }
     }
 
     //Egy ügyfél osztálya.
     class OneCustomer{
         private String name;                //0
         private String motherName;          //1
-        private String dayOfBirth;          //2
+        private String dayOfBirth;          //2 - Konkrét Date típusként kezelése a feladat szempontjából indifferens.
         private String placeOfBirth;        //3
-        private String accDate;             //4
+        private String accDate;             //4 - Konkrét Date típusként kezelése a feladat szempontjából indifferens, mivel pont megfelelő formátumban van a rendezéshez is.
         private String accNo;               //5
         private Integer balance;            //6
         private Integer deposit;            //7
@@ -153,5 +174,9 @@ public class customers {
         public Integer getDeposit() {
             return deposit;
         }
+
+        public String getNames(){ return name + motherName; }
+
+        public Integer getSum(){ return balance + deposit; }
     }
 
