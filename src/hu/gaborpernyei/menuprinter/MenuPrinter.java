@@ -37,7 +37,8 @@ class MenuItem{
                 break;
             default: prePos = "";
         }
-        retVal = prePos + getName();
+
+        retVal = (""+(char)9).repeat(depth)+  prePos + getName();
         if( subItems != null) {
             for( int forIdx = 0; forIdx < subItems.length; forIdx ++) {
                 MenuItem mi = subItems[ forIdx ];
