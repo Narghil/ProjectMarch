@@ -11,6 +11,7 @@ public class customers {
 
         allCustomers = new AllCustomers();
         allCustomers.loadCustomers();
+        allCustomers.sortByAccDate();
     }
 
 }
@@ -19,6 +20,7 @@ public class customers {
     class AllCustomers{
         private List<OneCustomer> customers = new ArrayList<OneCustomer>();
 
+        //Ügyfelek beolvasása
         public boolean loadCustomers(){
             BufferedReader br = null;
             String oneLine;
@@ -54,6 +56,11 @@ public class customers {
             System.out.println("Count of loaded customers:" + customers.size());
 
             return true;
+        }
+
+        //Ügyfelek rendezése számlanyitás dátuma szerint
+        public void sortByAccDate(){
+            Collections.sort( customers , (c1, c2) -> c1.getAccDate().compareTo(c2.getAccDate()));
         }
     }
 
