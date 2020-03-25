@@ -52,9 +52,11 @@ public class CountryInfo extends Application {
     @Override
     public void init() throws Exception {
         countries.loadCountries();
+        String[] names;
 
         cbCountryNames = new ComboBox();
-        cbCountryNames.getItems().addAll(countries.getCountryNames());
+        names = countries.getCountryNames();
+        cbCountryNames.getItems().addAll((Object[])names);
         cbCountryNames.getSelectionModel().select(0);
         ComboBoxHandler cbxHandler = new ComboBoxHandler();
         cbCountryNames.setOnAction(cbxHandler);
