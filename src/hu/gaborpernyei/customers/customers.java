@@ -39,7 +39,7 @@ public class customers {
                 for (OneCustomer oc: customers ) {
                     oneLine = oc.getName()+","+oc.getMotherName()+","+oc.getDayOfBirth()+","+oc.getPlaceOfBirth()+","+
                               oc.getAccDate()+","+oc.getAccNo()+","+oc.getBalance()+","+oc.getDeposit();
-                    bw.write( oneLine );
+                    bw.write( oneLine ); bw.newLine();
                 }
                 bw.close();
             } catch (IOException e) {
