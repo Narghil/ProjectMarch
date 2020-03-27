@@ -66,7 +66,7 @@ public class DebugTask4 {
                 List<Child> attendance = children.stream().filter(ch -> ch.getFavoriteSweets().equals(SweetOrFruit.Icecream) ||
                         ch.getFavoriteSweets().equals(SweetOrFruit.JollyRancher) ||
                         ch.getFavoriteSweets().equals(SweetOrFruit.Muffin) ||
-                        ch.getFavoriteSweets().equals(SweetOrFruit.VanillaShake)).collect(Collectors.toUnmodifiableList());
+                        ch.getFavoriteSweets().equals(SweetOrFruit.VanillaShake)).collect(Collectors.toList());
                 if (attendance.size() > 1) {
                     System.out.println("These guys can have a birthday party: " + Arrays.asList(attendance));
                 }
