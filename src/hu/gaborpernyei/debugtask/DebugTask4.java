@@ -3,7 +3,9 @@ package hu.gaborpernyei.debugtask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * UGYFEL BEJELENTES:
@@ -20,20 +22,16 @@ public class DebugTask4 {
         Child ch3 = new Child("Samuel");
         ch3.setFavoriteGame(GameOrToy.Bicycle);
 
-        //PG:Egy lehetséges javítás:
-        ch3.setFavoriteSweets(SweetOrFruit.Icecream);
-
         Child ch4 = new Child("Zack");
         ch4.setFavoriteGame(GameOrToy.ComputerGames);
         ch4.setFavoriteSweets(SweetOrFruit.Muffin);
+
         Child ch5 = new Child("Alicia", SweetOrFruit.Icecream, GameOrToy.Barbie);
         Child ch6 = new Child("Jessica", SweetOrFruit.Melon, GameOrToy.Sandbox);
         Child ch7 = new Child("Arda", SweetOrFruit.Mango, GameOrToy.GameBoy);
         Child ch8 = new Child("Baris");
-        ch8.setFavoriteGame(GameOrToy.Ball);
 
-        //PG:Egy lehetséges javítás:
-        ch8.setFavoriteSweets(SweetOrFruit.Icecream);
+        ch8.setFavoriteGame(GameOrToy.Ball);
 
         arrangeParty(Arrays.asList(ch8, ch7, ch2, ch4), Event.OnlineGaming);
         arrangeParty(Arrays.asList(ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8), Event.BallPark);
@@ -74,20 +72,17 @@ public class DebugTask4 {
                 }
 
                 //PG: Ők nincsenek a partiban
+                List<Child> notAttendance = children;
+                notAttendance.removeAll(Arrays.asList(attendance));
 
-                Object[] notAttendance = children.stream().filter(ch -> ! ch.getFavoriteSweets().equals(SweetOrFruit.Icecream) &&
-                        ! ch.getFavoriteSweets().equals(SweetOrFruit.JollyRancher) &&
-                        ! ch.getFavoriteSweets().equals(SweetOrFruit.Muffin) &&
-                        ! ch.getFavoriteSweets().equals(SweetOrFruit.VanillaShake)).toArray();
-
-                /* PG: Ez lenne a kért fejleszté, de nem tudom, hogy csinálhatnék a notAttendance-ból List-et...
-                if (notAttendance.length > 1) {
-                    System.out.println("These guys can not have a birthday party: " + Arrays.asList(notAttendance));
+                // PG: Ez lenne a kért fejlesztés...
+                if (notAttendance.size() > 1) {
+                    System.out.println("These guys can not have a birthday party: " + notAttendance);
                     System.out.println("Javaslatok:");
-                    arrangeParty((notAttendance, Event.OnlineGaming);
+                    arrangeParty(notAttendance, Event.OnlineGaming);
                     arrangeParty(notAttendance, Event.BallPark);
                 }
-                */
+
 
                 break;
             }
@@ -109,6 +104,9 @@ class Child {
 
     public Child(String name) {
         this.name = name;
+        //PG: Javítás
+        this.favoriteGame = GameOrToy.None;
+        this.favoriteSweets = SweetOrFruit.None;
     }
 
     public String getName() {
@@ -138,13 +136,13 @@ class Child {
 }
 
 enum SweetOrFruit {
-    Melon, Mango, Kiwi, Raspberry, Icecream, Muffin, JollyRancher, VanillaShake;
+    None, Melon, Mango, Kiwi, Raspberry, Icecream, Muffin, JollyRancher, VanillaShake;
 }
 
 enum GameOrToy {
-    PlaticSoldier, Ball, Barbie, CarRace, Bicycle, Lego, Puzzle, Sandbox, GameBoy, ComputerGames;
+    None, PlaticSoldier, Ball, Barbie, CarRace, Bicycle, Lego, Puzzle, Sandbox, GameBoy, ComputerGames;
 }
 
 enum Event {
-    BirthDayParty, BallPark, OnlineGaming
+    None, BirthDayParty, BallPark, OnlineGaming
 }
