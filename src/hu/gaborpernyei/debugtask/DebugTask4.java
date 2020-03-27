@@ -63,17 +63,17 @@ public class DebugTask4 {
             }
 
             case BirthDayParty: {
-                Object[] attendance = children.stream().filter(ch -> ch.getFavoriteSweets().equals(SweetOrFruit.Icecream) ||
+                List<Child> attendance = children.stream().filter(ch -> ch.getFavoriteSweets().equals(SweetOrFruit.Icecream) ||
                         ch.getFavoriteSweets().equals(SweetOrFruit.JollyRancher) ||
                         ch.getFavoriteSweets().equals(SweetOrFruit.Muffin) ||
-                        ch.getFavoriteSweets().equals(SweetOrFruit.VanillaShake)).toArray();
-                if (attendance.length > 1) {
+                        ch.getFavoriteSweets().equals(SweetOrFruit.VanillaShake)).collect(Collectors.toUnmodifiableList());
+                if (attendance.size() > 1) {
                     System.out.println("These guys can have a birthday party: " + Arrays.asList(attendance));
                 }
 
                 //PG: Ők nincsenek a partiban
                 List<Child> notAttendance = children;
-                notAttendance.removeAll(Arrays.asList(attendance));
+                notAttendance.removeAll(attendance);
 
                 // PG: Ez lenne a kért fejlesztés...
                 if (notAttendance.size() > 1) {
@@ -82,7 +82,6 @@ public class DebugTask4 {
                     arrangeParty(notAttendance, Event.OnlineGaming);
                     arrangeParty(notAttendance, Event.BallPark);
                 }
-
 
                 break;
             }
