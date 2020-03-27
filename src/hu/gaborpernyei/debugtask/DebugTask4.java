@@ -1,6 +1,7 @@
 package hu.gaborpernyei.debugtask;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,6 +72,23 @@ public class DebugTask4 {
                 if (attendance.length > 1) {
                     System.out.println("These guys can have a birthday party: " + Arrays.asList(attendance));
                 }
+
+                //PG: Ők nincsenek a partiban
+
+                Object[] notAttendance = children.stream().filter(ch -> ! ch.getFavoriteSweets().equals(SweetOrFruit.Icecream) &&
+                        ! ch.getFavoriteSweets().equals(SweetOrFruit.JollyRancher) &&
+                        ! ch.getFavoriteSweets().equals(SweetOrFruit.Muffin) &&
+                        ! ch.getFavoriteSweets().equals(SweetOrFruit.VanillaShake)).toArray();
+
+                /* PG: Ez lenne a kért fejleszté, de nem tudom, hogy csinálhatnék a notAttendance-ból List-et...
+                if (notAttendance.length > 1) {
+                    System.out.println("These guys can not have a birthday party: " + Arrays.asList(notAttendance));
+                    System.out.println("Javaslatok:");
+                    arrangeParty((notAttendance, Event.OnlineGaming);
+                    arrangeParty(notAttendance, Event.BallPark);
+                }
+                */
+
                 break;
             }
         }
