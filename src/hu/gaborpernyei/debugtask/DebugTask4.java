@@ -1,10 +1,7 @@
 package hu.gaborpernyei.debugtask;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,54 +35,63 @@ public class DebugTask4 {
         arrangeParty(Arrays.asList(ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8), Event.BirthDayParty);
     }
 
-    static void arrangeParty(List<Child> children, Event event) {
+    static /*void*/ List<Child> arrangeParty(List<Child> children, Event event) {
+        //PG Object[] attendance helyett : List<Child> attendance - ezt fogjuk visszaadni.
+        List<Child> attendance = null;
         switch (event) {
             case BallPark: {
-                Object[] attendance = children.stream().filter(ch -> ch.getFavoriteGame().equals(GameOrToy.Bicycle) ||
+                /*List<Child>*/ attendance = children.stream().filter(ch -> ch.getFavoriteGame().equals(GameOrToy.Bicycle) ||
                         ch.getFavoriteGame().equals(GameOrToy.Ball) ||
                         ch.getFavoriteGame().equals(GameOrToy.CarRace) ||
-                        ch.getFavoriteGame().equals(GameOrToy.Sandbox)).toArray();
+                        ch.getFavoriteGame().equals(GameOrToy.Sandbox)).collect(Collectors.toList());
 
-                if (attendance.length > 1) {
-                    System.out.println("These guys can go out to Ball Park: " + Arrays.asList(attendance));
+                if (attendance.size() > 0) {
+                    System.out.println("These guys can go out to Ball Park: " + /*Arrays.asList(*/attendance);
                 }
 
                 break;
             }
 
             case OnlineGaming: {
-                Object[] attendance = children.stream().filter(ch -> ch.getFavoriteGame().equals(GameOrToy.GameBoy) ||
-                        ch.getFavoriteGame().equals(GameOrToy.ComputerGames)).toArray();
-                if (attendance.length > 1) {
-                    System.out.println("These guys can have online gaming: " + Arrays.asList(attendance));
+                /*List<Child>*/ attendance = children.stream().filter(ch -> ch.getFavoriteGame().equals(GameOrToy.GameBoy) ||
+                        ch.getFavoriteGame().equals(GameOrToy.ComputerGames)).collect(Collectors.toList());
+                if (attendance.size() > 0) {
+                    System.out.println("These guys can have online gaming: " + /*Arrays.asList(*/attendance);
                 }
                 break;
             }
 
             case BirthDayParty: {
-                List<Child> attendance = children.stream().filter(ch -> ch.getFavoriteSweets().equals(SweetOrFruit.Icecream) ||
+                /*List<Child>*/ attendance = children.stream().filter(ch -> ch.getFavoriteSweets().equals(SweetOrFruit.Icecream) ||
                         ch.getFavoriteSweets().equals(SweetOrFruit.JollyRancher) ||
                         ch.getFavoriteSweets().equals(SweetOrFruit.Muffin) ||
                         ch.getFavoriteSweets().equals(SweetOrFruit.VanillaShake)).collect(Collectors.toList());
-                if (attendance.size() > 1) {
-                    System.out.println("These guys can have a birthday party: " + Arrays.asList(attendance));
+                if (attendance.size() > 0) {
+                    System.out.println("These guys can have a birthday party: " + attendance );
                 }
 
                 //PG: Ők nincsenek a partiban
-                List<Child> notAttendance = children;
+                List<Child> notAttendance = new LinkedList<Child>(children);
                 notAttendance.removeAll(attendance);
 
                 // PG: Ez lenne a kért fejlesztés...
-                if (notAttendance.size() > 1) {
-                    System.out.println("These guys can not have a birthday party: " + notAttendance);
+                if (notAttendance.size() > 0) {
+                    System.out.println("These guys can NOT have a birthday party: " + notAttendance);
                     System.out.println("Javaslatok:");
-                    arrangeParty(notAttendance, Event.OnlineGaming);
-                    arrangeParty(notAttendance, Event.BallPark);
+                    List<Child> att1 = arrangeParty(notAttendance, Event.BallPark);
+                    List<Child> att2 = arrangeParty(notAttendance, Event.OnlineGaming); //Arda-t ki kellene írnia. Nem teszi. Hiba oka "attendance.length > 1" Helyesen: attendance.length > 0
+                    //Van, akinek nem tudunk mit javasolni, ezt is kezelni kell
+                    notAttendance.removeAll(att1);
+                    notAttendance.removeAll(att2);
+                    if( notAttendance.size() > 0){
+                        System.out.println("These guys can NOT have any event: " + notAttendance);
+                    }
                 }
 
                 break;
             }
         }
+        return attendance;
     }
 }
 
