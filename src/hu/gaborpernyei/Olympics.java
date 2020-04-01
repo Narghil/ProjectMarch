@@ -53,7 +53,7 @@ public class Olympics {
     }
 
     //Olimpiák helyszíne a megadott években
-    public static void olympiadsInYears( Integer ... years ){
+    public static void placeOfOlympiadInYears( Integer ... years ){
         for (Integer year:years ) {
             System.out.print("Az Olimpia helyszíne a "+year+". évben:");
             GAMES.entrySet().stream().filter(e -> e.getKey().equals(year) ).forEach( e -> System.out.println(e.getValue()) ) ;
@@ -71,7 +71,7 @@ public class Olympics {
     public static void main(String[] args) {
         numOfOlympiadsInContinents( Continents.EURÓPA, Continents.ÁZSIA, Continents.AMERIKA );
         numOfOlympiadsInCountries( "USA" );
-        olympiadsInYears( 1964, 1984, 2004, 2024 );
+        placeOfOlympiadInYears( 1964, 1984, 2004, 2024 );
         countriesAndContinents();
     }
 }
