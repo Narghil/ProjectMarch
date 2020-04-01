@@ -28,7 +28,7 @@ public class Olympics {
     enum Continents{
         EURÓPA("Germany","Spain","Greece","UK","France"),
         ÁZSIA("Russia","South Korea","China","Japan"),
-        AMERIKA("Mexico","USA","Brazil"),
+        AMERIKA("Mexico","USA","Brazil","Canada"),
         AUSZTRÁLIA("Australia");
 
         String[] countries;
@@ -37,6 +37,7 @@ public class Olympics {
         }
     }
 
+    //A megadott ország kontinense
     public static String getContinent( String country ){
         for (Continents co:Continents.values() ) {
             if( Arrays.asList(co.countries).contains(country) ){
@@ -46,19 +47,42 @@ public class Olympics {
         return "n.a.";
     }
 
-    public static void main(String[] args) {
-        System.out.print("Olimpiák az USA-ban:");
-        System.out.println(GAMES.entrySet().stream().filter(e -> e.getValue().equals("USA") ).count());
+    //Olimpiák száma a megadott kontinenseken
+    public static void numOfOlympiadsInContinents( Continents ... continents ){
+        for( Continents co:continents) {
+            System.out.print("Megtartott olimpiák száma " + co.name() + " kontinensén:");
+            System.out.println(GAMES.entrySet().stream().filter(e -> Arrays.asList(co.countries).contains(e.getValue())).count());
+        }
+    }
 
-        System.out.print("Olimpiák az Amerikai kontonensen:");
-        System.out.println(GAMES.entrySet().stream().filter(e -> Arrays.asList(Continents.AMERIKA.countries).contains(e.getValue()) ).count() );
+    //Olimpiák száma a megadott országokban
+    public static void numOfOlympiadsInCountries( String ... countries ){
+        for( String country:countries){
+            System.out.print("Megtartott olimpiák száma ebben az országban:" + country+":");
+            System.out.println(GAMES.entrySet().stream().filter(e -> e.getValue().equals(country) ).count());
+        }
+    }
 
-        System.out.print("Olimpia 1984-ben:");
-        GAMES.entrySet().stream().filter(e -> e.getKey() == 1984 ).forEach( e -> System.out.println(e.getValue()));
+    //Olimpiák helyszíne a megadott években
+    public static void olympiadsInYears( Integer ... years ){
+        for (Integer year:years ) {
+            System.out.print("Az Olimpia helyszíne a "+year+". évben:");
+            GAMES.entrySet().stream().filter(e -> e.getKey().equals(year) ).forEach( e -> System.out.println(e.getValue()) ) ;
+        }
+    }
 
+    //Olimpiát rendező országok, a kontinensükkel együtt
+    public static void countriesAndContinents(){
         System.out.println("Rendező országok és kontinensük:");
         Arrays.stream(GAMES.values().toArray())
                 .distinct().forEach( e-> System.out.println( e.toString() + ":" + getContinent(e.toString() ) ) );
+    }
+
+    public static void main(String[] args) {
+        numOfOlympiadsInContinents( Continents.EURÓPA, Continents.ÁZSIA, Continents.AMERIKA );
+        numOfOlympiadsInCountries( "USA" );
+        olympiadsInYears( 1964, 1984, 2004, 2024 );
+        countriesAndContinents();
     }
 }
 
