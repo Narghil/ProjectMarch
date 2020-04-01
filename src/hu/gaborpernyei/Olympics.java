@@ -6,23 +6,12 @@ public class Olympics {
     private final static Map<Integer, String> GAMES = new HashMap();
 
     static {
-        GAMES.put(1964, "Japan");
-        GAMES.put(1968, "Mexico");
-        GAMES.put(1972, "Germany");
-        GAMES.put(1976, "Canada");
-        GAMES.put(1980, "Russia");
-        GAMES.put(1984, "USA");
-        GAMES.put(1988, "South Korea");
-        GAMES.put(1992, "Spain");
-        GAMES.put(1996, "USA");
-        GAMES.put(2000, "Australia");
-        GAMES.put(2004, "Greece");
-        GAMES.put(2008, "China");
-        GAMES.put(2012, "UK");
-        GAMES.put(2016, "Brazil");
-        GAMES.put(2021, "Japan");
-        GAMES.put(2024, "France");
-        GAMES.put(2028, "USA");
+        GAMES.put(1964, "Japan");       GAMES.put(1968, "Mexico"); GAMES.put(1972, "Germany");
+        GAMES.put(1976, "Canada");      GAMES.put(1980, "Russia"); GAMES.put(1984, "USA");
+        GAMES.put(1988, "South Korea"); GAMES.put(1992, "Spain");  GAMES.put(1996, "USA");
+        GAMES.put(2000, "Australia");   GAMES.put(2004, "Greece"); GAMES.put(2008, "China");
+        GAMES.put(2012, "UK");          GAMES.put(2016, "Brazil"); GAMES.put(2021, "Japan");
+        GAMES.put(2024, "France");      GAMES.put(2028, "USA");
     }
 
     enum Continents{
@@ -68,6 +57,7 @@ public class Olympics {
         for (Integer year:years ) {
             System.out.print("Az Olimpia helyszíne a "+year+". évben:");
             GAMES.entrySet().stream().filter(e -> e.getKey().equals(year) ).forEach( e -> System.out.println(e.getValue()) ) ;
+            //Megjegyzés: "e.getKey() == year" és "e.getKey() != year" nem működik, de "<" és ">" igen.
         }
     }
 
